@@ -20,6 +20,7 @@ async function run() {
     try {
         client.connect();
         const toolsCollection = client.db("green-garden-tools").collection("tools");
+        const ordersCollection = client.db("green-garden-tools").collection("orders");
 
         // Get Tools
         app.get('/tool', async (req, res) => {
@@ -32,6 +33,13 @@ async function run() {
                 const query = { _id: ObjectId(id) };
                 const tools = await toolsCollection.findOne(query);
                 res.send(tools);
+            })
+            // Post order
+            app.post('/order', async (req, res) => {
+                const orders = req.body;
+                const result = await ordersCollection.insertOne(orders);
+                res.send(result);
+
             })
         })
 
