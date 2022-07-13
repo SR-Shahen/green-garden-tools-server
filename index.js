@@ -41,6 +41,15 @@ async function run() {
                 res.send(result);
 
             })
+
+            // Get order use React query
+
+            app.get('/order', async (req, res) => {
+                const customer = req.query.customer;
+                const query = { customer: customer };
+                const orders = await ordersCollection.find(query).toArray();
+                res.send(orders);
+            })
         })
 
     }
