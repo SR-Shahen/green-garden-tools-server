@@ -21,6 +21,8 @@ async function run() {
         client.connect();
         const toolsCollection = client.db("green-garden-tools").collection("tools");
         const ordersCollection = client.db("green-garden-tools").collection("orders");
+        const reviewsCollection = client.db("green-garden-tools").collection("reviews");
+
 
         // Get Tools
         app.get('/tool', async (req, res) => {
@@ -49,6 +51,28 @@ async function run() {
                 const query = { customer: customer };
                 const orders = await ordersCollection.find(query).toArray();
                 res.send(orders);
+            })
+
+            // Delete Order
+            app.delete('/order/:id', async (req, res) => {
+                const id = req.params.id;
+                const query = { _id: ObjectId(id) };
+                const result = await ordersCollection.deleteOne(query);
+                res.send(result);
+            })
+            // Post Review
+            app.post('/review', async (req, res) => {
+                const review = req.body;
+                const result = await reviewsCollection.insertOne(review);
+                res.send(result);
+            })
+
+            // Get Review
+
+            app.get('/review', async (req, res) => {
+                const query = {};
+                const reviews = await reviewsCollection.find().toArray();
+                res.send(reviews);
             })
         })
 
