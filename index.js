@@ -22,7 +22,7 @@ async function run() {
         const toolsCollection = client.db("green-garden-tools").collection("tools");
         const ordersCollection = client.db("green-garden-tools").collection("orders");
         const reviewsCollection = client.db("green-garden-tools").collection("reviews");
-
+        const usersCollection = client.db("green-garden-tools").collection("users");
 
         // Get Tools
         app.get('/tool', async (req, res) => {
@@ -73,6 +73,24 @@ async function run() {
                 const query = {};
                 const reviews = await reviewsCollection.find().toArray();
                 res.send(reviews);
+            })
+            // Get All Users
+            app.get('/user', async (req, res) => {
+                const query = {};
+                const result = await usersCollection.find().toArray();
+                res.send(result);
+            })
+            // Update User
+            app.put('/user/:email', async (req, res) => {
+                const email = req.params.email;
+                const user = req.body;
+                const filter = { email: email };
+                const options = { upsert: true };
+                const updateDoc = {
+                    $set: user
+                };
+                const result = await usersCollection.updateOne(filter, updateDoc, options);
+                res.send(result);
             })
         })
 
