@@ -133,5 +133,5 @@ app.get('/', (req, res) => {
     res.send('Green Garden tools server is running');
 })
 app.listen(port, (req, res) => {
-    console.log('server is running');
+    console.log('this server is running');
 })
